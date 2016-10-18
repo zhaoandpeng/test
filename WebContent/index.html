@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AnyChat初始化Demo</title>
+<!-- 加载AnyChat for Web SDK库  -->
+</head>
+<body onload="initSDK()">
+	
+	<button onclick="connVideo()">连接视频服务器</button>
+	<button onclick="login()">登录</button>
+	<button onclick="enterRoom()">进入房间</button>
+	<select name="shexiangtou" id="shexiang" onchange="GetTheCamera(this.value)">
+	</select>
+	<select name="shexiangtou" id="shexiangtou" onchange="GetCamera(this.value)">
+	</select>
+	<div id="AnyChatLocalVideoDiv" style="width: 320px; height: 240px; background-color: #E6E6E6; margin: 5px 5px 5px 5px; float: left;">
+	</div>
+	<button id="start">开始录制</button>
+</body>
+<script src="./javascript/anychatsdk.js"></script>
+<script src="./javascript/advanceset.js"></script>
+<script src="./javascript/anychatevent.js"></script>
+<script src="./javascript/login.js"></script>
+</html>
+
+<!-- ---------------------------------------------------------- -->
+

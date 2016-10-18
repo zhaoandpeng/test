@@ -1,0 +1,188 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=gbk">
+<style type="text/css">
+.style0{ border-width: 1px; border-style: solid; border-color:black;}
+</style>
+<script type="text/javascript"> 
+	//window.location.href = 'SignResult.html';
+	var m_failedPhoto = 0;
+	var m_successPhoto = 0;
+
+	function captureImage()
+	{
+        if (bjcaCameraOcx.GetStatus() != 0)
+	    {
+            document.getElementById("captureresult").value = "高拍仪未连接, 请点击‘拍照完成’后重新插入高拍仪再打开此页面";
+		    m_failedPhoto++;
+		    return;
+	    }
+
+	    var csImage = bjcaCameraOcx.CapImg2Mem();
+	    if(csImage.Length == 0)
+	    {
+            document.getElementById("captureresult").value = "CapImg2Disk fail";
+		    m_failedPhoto++;
+	    }
+	    else{
+		    m_successPhoto++;
+	    }
+		//var ids="image_result1"+"_s";
+		//document.getElementById("image_result1").innerHTML = "<img id="+ids+" src=\"data:image/jpeg;base64,"+csImage+"\" //width=\"200\" height=\"150\"  onmouseover=\"over("+ids+")\" onmouseout='out()' \>";
+		if(m_successPhoto%2 == 1)
+		     document.getElementById("image_result1").innerHTML = "<img src=\"data:image/jpeg;base64,"+csImage+"\" width=\"300\" height=\"200\">";  
+	    else
+		     document.getElementById("image_result2").innerHTML = "<img src=\"data:image/jpeg;base64,"+csImage+"\" width=\"300\" height=\"200\">";  
+	    var sMsg = "拍照成功：";
+	    sMsg += m_successPhoto;
+	    sMsg += "张;";
+	    sMsg += "拍照失败：";
+        sMsg += m_failedPhoto;
+	    sMsg += "张";
+        document.getElementById("captureresult").value = sMsg; 
+	}
+
+	function openCamera1()
+	{
+		var id = 1;
+		var lRet = bjcaCameraOcx.Init(id);
+		if (lRet != 0)
+        {
+            alert("init fail");
+            return;
+        }
+        lRet = bjcaCameraOcx.SetCaptureSize(800, 600);
+        if (lRet != 0)
+        {
+            alert("SetCaptureSize fail");
+            return;
+        }
+        lRet = bjcaCameraOcx.Start();
+        if (lRet != 0)
+        {
+            alert("Start fail");
+            return;
+        }
+        bjcaCameraOcx.SetImgDPI(200);
+        bjcaCameraOcx.SetImgType(2, 20);
+		var ret = bjcaCameraOcx.SetCrop(1);
+		alert(ret);
+	}
+	
+	function openCamera2()
+	{
+		var id = 2;
+		var lRet = bjcaCameraOcx.Init(id);
+		if (lRet != 0)
+        {
+            alert("init fail");
+            return;
+        }
+        lRet = bjcaCameraOcx.SetCaptureSize(1600, 1200);
+        if (lRet != 0)
+        {
+            alert("SetCaptureSize fail");
+            return;
+        }
+        lRet = bjcaCameraOcx.Start();
+        if (lRet != 0)
+        {
+            alert("Start fail");
+            return;
+        }
+        bjcaCameraOcx.SetImgDPI(200);
+        bjcaCameraOcx.SetImgType(2, 100);
+	}
+
+	function stopCamera()
+	{
+        var lRet = bjcaCameraOcx.Stop();
+        if (bjcaCameraOcx.GetStatus() == 0)
+            bjcaCameraOcx.Stop();
+        else
+        {
+            document.getElementById("captureresult").value = "停止拍照失败";
+            return;
+        }
+        bjcaCameraOcx.Release();	
+	}
+	
+</script> 
+</head>
+<body>
+ <table border = "1" style = "table-layout:fixed;border-collapse:collapse;" align="center" bgcolor="#CEE1C4"class = "style0"> 
+<tr>
+		<table align="center">	
+        	<tr height="100%">
+				<td valign="top" align="center">
+					<OBJECT id="bjcaCameraOcx" name="bjcaCameraOcx" classid="clsid:3C97582F-DE8A-4C2E-8B97-22D14032BD40" width = "600" height = "400">    
+					</OBJECT>
+				</td>
+				<td width="300" valign="top" bgcolor="#CEE1C4">
+					<table width="100%">
+						<tr>
+							<td align="center">
+							</br></br>
+								<input type="button" value="打开摄像头" style="width:150px;height:50px;border-style:solid;-moz-border-radius:15px;-webkit-border-radius: 15px;border-radius:15px;" onclick="openCamera1()"><br/><br/>						
+							</td>
+						</tr>
+				<!--		<tr>
+							<td align="center">
+								<input type="button" value="开启副摄像头" style="width:120px;height:30px" onclick="openCamera2()"><br/><br/>								
+							</td>
+						</tr>  -->
+						
+						<tr>
+							<td align="center">
+								<input type="button" value="拍照" style="width:150px;height:50px;border-style:solid;-moz-border-radius:15px;-webkit-border-radius: 15px;border-radius:15px;" onclick="captureImage();"><br/><br/>						
+							</td>
+						</tr>
+						
+					    <tr>
+						    <td align="center">
+						       <input type="text" style="width:200px;height:25px;background-color:#CEE1C4;border-width:1px; border-style:none;border-color:white;" id="captureresult" ><br/><br/>
+							</td>
+						</tr>   
+	
+						<tr>
+							<td align="center">
+								<input type="button" value="拍照完成" style="width:150px;height:50px;border-style:solid;-moz-border-radius:15px;-webkit-border-radius: 15px;border-radius:15px;" onclick="stopCamera();"><br/><br/>							
+							</td>
+						</tr>
+						
+					</table>
+
+					
+      		    </td>
+        	</tr>
+			</table>	
+			
+			<table align="center">
+			<tr bgcolor="#CEE1C4">
+			    <td>
+				<div id="Div_Image_Data">
+	        	   <div  id="image_result1" title="此处显示拍照图片" style="width:300px;height:200px">
+		           </div>
+	            </div>
+				</td>
+				
+				<td>
+				<div id="Div_Image_Data">
+	        	   <div  id="image_result2" title="此处显示拍照图片" style="width:300px;height:200px">
+		           </div>
+	            </div>
+				
+				</td>
+                <td>
+				 <div id="Div_Image_Data">
+	        	   <div  id="image_result3" title="此处显示拍照图片" style="width:300px;height:200px">
+		           </div>
+	            </div>
+				</td>
+			</tr>
+			</table>
+</tr>
+</table> 
+</body>
+
+</html>
